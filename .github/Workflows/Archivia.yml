@@ -1,0 +1,18 @@
+name: archivia
+on:
+  push:
+    paths: ['prompts/**', 'news/prompts/**']
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          date=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "{\"data\":\"$date\",\"repo\":\"humansafe-os\"}" >> storia/indice.json
+      - run: |
+          git config user.name "meseb"
+          git config user.email "messoud.sebbahi@gmail.com"
+          git add storia/
+          git commit -m "log" || exit 0
+          git push
